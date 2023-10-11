@@ -8,7 +8,7 @@ let server: Server | null = null;
 async function main() {
   try {
     // mongoose.set('debug', true);
-    await mongoose.connect(configData.db_url as string);
+    await mongoose.connect(configData.db_url);
     console.log('Database is connected successfully.');
 
     server = app.listen(configData.port, () => {
@@ -29,8 +29,18 @@ function stopServer() {
         console.error('Error while closing the server:', error);
       } else {
         console.log('Server closed.');
+        // Disconnect from the database when the server is closed
+        mongoose
+          .disconnect()
+          .then(() => {
+            console.log('Disconnected from the database');
+            process.exit(0);
+          })
+          .catch(error => {
+            console.error('Error disconnecting from the database:', error);
+            process.exit(1);
+          });
       }
-      process.exit(0);
     });
   } else {
     console.log('Server is not running.');

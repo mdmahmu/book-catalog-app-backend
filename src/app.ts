@@ -1,5 +1,5 @@
-import express, { Application, NextFunction, Request, Response } from "express";
-import cors from "cors";
+import express, { Application, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
 
 // Creating Express application
 const app: Application = express();
@@ -10,19 +10,19 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
 // Defining a simple root route
-app.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  res.send("Server is running...");
+app.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  res.send('Server is running...');
 });
 
 // handle not found route
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     success: false,
-    message: "404 not found.",
+    message: '404 not found.',
     errorMessages: [
       {
         path: req.originalUrl,
-        message: "Route not found.",
+        message: 'Route not found.',
       },
     ],
   });
