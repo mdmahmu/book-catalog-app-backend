@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import mainRoutes from './routes';
 // import router from './sourceRoutes';
@@ -12,7 +12,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
 // Defining a simple root route
-app.get('/', async (req: Request, res: Response, next: NextFunction) => {
+app.get('/', async (req: Request, res: Response) => {
   res.send('Server is running...');
 });
 
