@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import mainRoutes from './routes';
-// import router from './sourceRoutes';
+import globalErrorHandler from './middlewares/globalErrorHandler';
 
 // Creating Express application
 const app: Application = express();
@@ -16,7 +16,11 @@ app.get('/', async (req: Request, res: Response) => {
   res.send('Server is running...');
 });
 
+// Mount the router for API endpoints under '/api/v1'
 app.use('/api/v1', mainRoutes);
+
+// Global error handler
+app.use(globalErrorHandler); // ei global error handler ke uporer middleware section e rakhle hobe na. API endpoints er niche rakhte hobe.
 
 // handle not found route
 app.use((req: Request, res: Response) => {
