@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import mainRoutes from './routes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
+import cookieParser from 'cookie-parser';
 
 // Creating Express application
 const app: Application = express();
@@ -10,6 +11,7 @@ const app: Application = express();
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
+app.use(cookieParser()); // cookie parser
 
 // Defining a simple root route
 app.get('/', async (req: Request, res: Response) => {

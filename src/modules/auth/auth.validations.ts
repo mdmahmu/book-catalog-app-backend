@@ -25,6 +25,33 @@ const signUpUserZodSchema = z.object({
     .strict(),
 });
 
+const loginUserZodSchema = z.object({
+  body: z
+    .object({
+      email: z
+        .string({
+          required_error: 'Email is required.',
+        })
+        .email('Must be a valid email address.'),
+      password: z.string({
+        required_error: 'Password is required.',
+      }),
+    })
+    .strict(),
+});
+
+const refreshTokenZodSchema = z.object({
+  cookies: z
+    .object({
+      refreshToken: z.string({
+        required_error: 'Refresh token is required.',
+      }),
+    })
+    .strict(),
+});
+
 export const AuthValidations = {
   signUpUserZodSchema,
+  loginUserZodSchema,
+  refreshTokenZodSchema,
 };

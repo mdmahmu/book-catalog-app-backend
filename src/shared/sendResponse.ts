@@ -7,6 +7,11 @@ export type ResponseType<T> = {
   data?: T | null;
 };
 
+export type LoginResponse = {
+  accessToken: string;
+  refreshToken?: string;
+};
+
 const sendResponse = <T>(res: Response, data: ResponseType<T>): void => {
   const responseData: ResponseType<T> = {
     success: data.success,

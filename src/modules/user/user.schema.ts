@@ -1,8 +1,9 @@
 import { Schema } from 'mongoose';
 import { UserType } from './user.types';
 import { gender } from './user.constants';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { configData } from '../../configuration/dotenv.config';
+import { User } from './user.model';
 
 export const userSchema = new Schema<UserType>(
   {
@@ -18,6 +19,7 @@ export const userSchema = new Schema<UserType>(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     gender: {
       type: String,
@@ -36,6 +38,17 @@ export const userSchema = new Schema<UserType>(
     },
   },
 );
+
+userSchema.statics.isUserExist = async function (email: string) {
+  return await User.findOne({ email }, { email: 1, password: 1 });
+};
+
+userSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string,
+) {
+  return compare(givenPassword, savedPassword);
+};
 
 userSchema.pre('save', async function (next) {
   // password hashing
