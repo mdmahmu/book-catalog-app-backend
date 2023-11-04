@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongoose';
 
-export type bookType = {
+export type BookType = {
   title: string;
   author: string;
   genre: string;
-  publication_date: string;
+  publicationYear: string;
   reviews: string[];
   uploader: ObjectId;
 };

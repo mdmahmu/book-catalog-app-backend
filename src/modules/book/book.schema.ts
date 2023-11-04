@@ -1,7 +1,7 @@
 import { Schema, Types } from 'mongoose';
-import { bookType } from './book.types';
+import { BookType } from './book.types';
 
-export const bookSchema = new Schema<bookType>(
+export const bookSchema = new Schema<BookType>(
   {
     title: {
       type: String,
@@ -15,7 +15,7 @@ export const bookSchema = new Schema<bookType>(
       type: String,
       required: true,
     },
-    publication_date: {
+    publicationYear: {
       type: String,
       required: true,
     },
