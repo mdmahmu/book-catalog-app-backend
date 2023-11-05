@@ -57,7 +57,47 @@ const getAllBooks: RequestHandler = catchAsync(async (req, res) => {
   }
 });
 
+const getSingleBook: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await BookServices.getSingleBookDB(id);
+
+  sendResponse<BookType>(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Book retrieved successfully.',
+    data: result,
+  });
+});
+
+const updateBookInfo: RequestHandler = catchAsync(async (req, res) => {
+  const id: string = req.params.id;
+  const dataToUpdate: Partial<BookType> = req.body;
+  const result = await BookServices.updateBookInfoDB(id, dataToUpdate);
+
+  sendResponse<BookType>(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Book updated successfully.',
+    data: result,
+  });
+});
+
+const deleteBook: RequestHandler = catchAsync(async (req, res) => {
+  const id: string = req.params.id;
+  const result = await BookServices.deleteBookDB(id);
+
+  sendResponse<BookType>(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Book deleted successfully.',
+    data: result,
+  });
+});
+
 export const BookControllers = {
   createBook,
   getAllBooks,
+  getSingleBook,
+  updateBookInfo,
+  deleteBook,
 };

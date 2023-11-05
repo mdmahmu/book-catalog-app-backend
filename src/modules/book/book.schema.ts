@@ -16,7 +16,7 @@ export const bookSchema = new Schema<BookType>(
       required: true,
     },
     publicationYear: {
-      type: String,
+      type: Number,
       required: true,
     },
     reviews: {

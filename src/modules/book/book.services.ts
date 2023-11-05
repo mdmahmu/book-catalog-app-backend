@@ -8,6 +8,7 @@ import {
 import { Book } from './book.model';
 import { BookType } from './book.types';
 import { MetaResponseType } from '../../shared/sendResponse';
+import ApiError from '../../errors/ApiError';
 
 const createBookDB = async (bookData: BookType) => {
   const createdBook = await Book.create(bookData);
@@ -83,7 +84,42 @@ const getAllBooksDB = async (
   };
 };
 
+const getSingleBookDB = async (id: string): Promise<BookType> => {
+  const singleBook = await Book.findById(id);
+  if (!singleBook) {
+    throw new ApiError(404, 'No book found.');
+  }
+  return singleBook;
+};
+
+const updateBookInfoDB = async (
+  id: string,
+  payload: Partial<BookType>,
+): Promise<BookType | null> => {
+  const isExist = await Book.findById(id);
+  if (!isExist) {
+    throw new ApiError(404, `Book doesn't exist. Update operation failed.`);
+  }
+
+  const updatedBook = await Book.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+
+  return updatedBook;
+};
+
+const deleteBookDB = async (id: string): Promise<BookType> => {
+  const deletedBook = await Book.findByIdAndDelete(id);
+  if (!deletedBook) {
+    throw new ApiError(404, `Book doesn't exist. Delete operation failed.`);
+  }
+  return deletedBook;
+};
+
 export const BookServices = {
   createBookDB,
   getAllBooksDB,
+  getSingleBookDB,
+  updateBookInfoDB,
+  deleteBookDB,
 };

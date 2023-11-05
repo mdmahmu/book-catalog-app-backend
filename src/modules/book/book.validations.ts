@@ -12,8 +12,8 @@ const createBookZodSchema = z.object({
       genre: z.string({
         required_error: 'Genre is required.',
       }),
-      publicationYear: z.string({
-        required_error: 'Publication date is required.',
+      publicationYear: z.number({
+        required_error: 'Publication year is required.',
       }),
       reviews: z.array(z.string()).optional(),
       uploader: z.string({
@@ -23,6 +23,28 @@ const createBookZodSchema = z.object({
     .strict(),
 });
 
+const updateBookZodSchema = z.object({
+  body: z
+    .object({
+      title: z.string().optional(),
+      author: z.string().optional(),
+      genre: z.string().optional(),
+      publicationYear: z.number().optional(),
+      reviews: z.array(z.string()).optional(),
+      uploader: z.string().optional(),
+    })
+    .strict()
+    .refine(
+      data => {
+        return Object.keys(data).length > 0;
+      },
+      {
+        message: 'At least one valid field is required to update.',
+      },
+    ),
+});
+
 export const BookValidations = {
   createBookZodSchema,
+  updateBookZodSchema,
 };

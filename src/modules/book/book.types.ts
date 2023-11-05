@@ -4,7 +4,7 @@ export type BookType = {
   title: string;
   author: string;
   genre: string;
-  publicationYear: string;
+  publicationYear: number;
   reviews: string[];
   uploader: ObjectId;
 };

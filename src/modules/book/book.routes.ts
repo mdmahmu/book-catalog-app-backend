@@ -11,6 +11,14 @@ router.post(
   BookControllers.createBook,
 );
 
+router.get('/:id', BookControllers.getSingleBook);
+router.patch(
+  '/:id',
+  validateRequest(BookValidations.updateBookZodSchema),
+  BookControllers.updateBookInfo,
+);
+router.delete('/:id', BookControllers.deleteBook);
+
 router.get('/', BookControllers.getAllBooks);
 
 export const BookRoutes = router;
