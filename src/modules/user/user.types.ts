@@ -1,14 +1,22 @@
-import { Model } from 'mongoose';
-import { gender } from './user.constants';
+import { Model, ObjectId } from 'mongoose';
+import { gender, statusList } from './user.constants';
 
 export type GenderType = keyof typeof gender;
+
+export type StatusType = keyof typeof statusList;
+
+export type WishlistType = {
+  bookId: ObjectId;
+  status: StatusType;
+};
 
 export type UserType = {
   name: string;
   email: string;
   password: string;
   gender: GenderType;
-  birthday: string;
+  birthday: Date;
+  bookList?: WishlistType[];
 };
 
 export type UserModel = {

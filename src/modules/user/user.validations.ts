@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { gender } from './user.constants';
+import { gender, statusList } from './user.constants';
 
 const updateUserZodSchema = z.object({
   body: z
@@ -10,6 +10,14 @@ const updateUserZodSchema = z.object({
       gender: z.enum([...gender] as [string, ...string[]]).optional(),
       phoneNumber: z.string().optional(),
       birthday: z.string().optional(),
+      bookList: z
+        .array(
+          z.object({
+            bookId: z.string().optional(),
+            status: z.enum([...statusList] as [string, ...string[]]).optional(),
+          }),
+        )
+        .optional(),
     })
     .strict() // body ke strict korte hobe. taile wrong field diye data update korte gele error dibe. body er baire korle hobe na.
     .refine(

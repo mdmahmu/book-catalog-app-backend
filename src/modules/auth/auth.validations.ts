@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { gender } from '../user/user.constants';
+import { gender, statusList } from '../user/user.constants';
+
+export const BookZodSchema = z.object({
+  bookId: z.string(),
+  status: z.enum([...statusList] as [string, ...string[]]),
+});
 
 const signUpUserZodSchema = z.object({
   body: z
@@ -21,6 +26,7 @@ const signUpUserZodSchema = z.object({
       birthday: z.string({
         required_error: 'Birthday is required.',
       }),
+      bookList: z.array(BookZodSchema).optional(),
     })
     .strict(),
 });

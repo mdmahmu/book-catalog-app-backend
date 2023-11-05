@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 import { UserType } from './user.types';
-import { gender } from './user.constants';
+import { gender, statusList } from './user.constants';
 import { compare, hash } from 'bcrypt';
 import { configData } from '../../configuration/dotenv.config';
 import { User } from './user.model';
@@ -27,8 +27,26 @@ export const userSchema = new Schema<UserType>(
       required: true,
     },
     birthday: {
-      type: String,
+      type: Date,
       required: true,
+    },
+    bookList: {
+      type: [
+        {
+          bookId: {
+            type: Types.ObjectId,
+            required: true,
+            ref: 'Book',
+          },
+          status: {
+            type: String,
+            required: true,
+            enum: statusList,
+            default: statusList[0] as keyof typeof statusList,
+          },
+        },
+      ],
+      required: false,
     },
   },
   {
@@ -51,8 +69,12 @@ userSchema.statics.isPasswordMatched = async function (
 };
 
 userSchema.pre('save', async function (next) {
-  // password hashing
-  this.password = await hash(this.password, configData.bcrypt_salt_rounds);
+  if (!this.isModified('password')) return next(); // Skip hashing if password isn't modified
 
-  next();
+  try {
+    this.password = await hash(this.password, configData.bcrypt_salt_rounds);
+    next();
+  } catch (error) {
+    next(error as Error); // Pass error to the next middleware
+  }
 });
